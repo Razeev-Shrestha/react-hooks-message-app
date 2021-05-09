@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useReducer } from 'react'
+import Context from './context'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import MessageBoard from './components/MessageBoard'
+import PublishMessage from './components/PublishMessage'
+import reducer, { initialState } from './state/reducer'
+
+import PubSub from './pubsub'
+import SetUserName from './components/SetUserName'
+
+const pubsub = new PubSub()
+
+const App = () => {
+	const [state, dispatch] = useReducer(reducer, initialState)
+
+	useEffect(() => {
+		pubsub.addListener({
+			message: (messageObject) => {
+				const { channel, message } = messageObject
+				console.log('Received message', message, 'channel', channel)
+
+				dispatch(message)
+			},
+		})
+	}, [])
+	console.log('state', state)
+
+	return (
+		<Context.Provider value={{ state, dispatch ,pubsub}}>
+			<h2>Hello Message</h2>
+			<SetUserName />
+			<hr />
+			<PublishMessage />
+			<hr />
+			<MessageBoard />
+		</Context.Provider>
+	)
 }
 
-export default App;
+export default App
