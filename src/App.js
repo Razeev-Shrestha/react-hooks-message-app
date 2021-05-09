@@ -26,8 +26,8 @@ const App = () => {
 	console.log('state', state)
 
 	return (
-		<Context.Provider value={{ state, dispatch ,pubsub}}>
-			<h2>Hello Message</h2>
+		<Context.Provider value={{ state, dispatch, pubsub }}>
+			<h2>Message App !!!</h2>
 			<SetUserName />
 			<hr />
 			<PublishMessage />

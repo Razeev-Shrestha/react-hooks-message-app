@@ -10,6 +10,7 @@ const PublishMessage = () => {
 	const [message, setMessage] = useState('')
 	const publishMessage = () => {
 		publish(newMessage({ message, username }))
+		setMessage('')
 	}
 	const handleKeyPress = (e) => {
 		if (e.key === 'Enter') publishMessage()
